@@ -1,16 +1,16 @@
 ###Save the webdriver and  script under one folder. 
 ##By Lin  20170308. 
 #Path of the webdriver. 
-PathProgram="C:\LinXiong\PythonLearning\OPUSupload\OpusVersion4" 
+PathProgram="C:/Users/lxiong/UMD/GPS/data"
 #find your data file folder. 
-Path="C:\LinXiong\PythonLearning\OPUSupload\OpusVersion4\File" 
+Path="C:/Users/lxiong/UMD/GPS/data"
 #File format 
-fileformat="*17o" 
+fileformat="*.23o"
  
 #Antenna height 
 height=0.0 
-email="gpsandlidar****@gmail.com" 
-antenna="TRM57971.00     NONE" 
+email="gpsandlidar2018@gmail.com"
+antenna="TRM57971.00     NONE"
 #antenna="TRMR10          NONE" 
  
 import glob, os, time 
@@ -22,32 +22,41 @@ from selenium.common.exceptions import UnexpectedAlertPresentException
 from selenium.common.exceptions import NoAlertPresentException 
 from selenium.common.exceptions import NoSuchElementException 
 from selenium.webdriver.common.keys import Keys 
+from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.service import Service
  
 def upload(): 
     time.sleep(1) 
     try: 
-        driver.find_element_by_class_name("declineButton").click() 
+        driver.find_element(By.CLASS_NAME, "declineButton").click()
+
  
     except NoSuchElementException: 
          print ("No survey pop up!") 
  
-    elem = driver.find_element_by_name("uploadfile") 
+    elem = driver.find_element(By.NAME, "uploadfile") 
     elem.clear() 
     elem.send_keys("{}".format(filepath)) 
-    driver.find_element_by_xpath("//*[@id='container']/form/div[1]/span").click() 
+    driver.find_element(By.XPATH, "//*[@id='container']/form/div[1]/span").click()
     time.sleep(2) 
-    user_input = driver.find_element_by_xpath("/html/body/span/span/span[1]/input") 
+    user_input = driver.find_element(By.XPATH, "/html/body/span/span/span[1]/input")
+ 
     user_input.send_keys(antenna) 
     time.sleep(2) 
-    driver.find_element_by_css_selector("#select2-ant_type-results > li:nth-child(1)").click() 
-    elem = driver.find_element_by_name("height") 
+    driver.find_element(By.CSS_SELECTOR, "#select2-ant_type-results > li:nth-child(1)").click()
+
+    elem = driver.find_element(By.NAME, "height")
+
     elem.clear() 
     elem.send_keys("{}".format(height)) 
-    elem = driver.find_element_by_name("email_address") 
+    elem = driver.find_element(By.NAME, "email_address")
+
     elem.clear() 
     elem.send_keys("{}".format(email)) 
     elem.send_keys(Keys.RETURN) 
-    driver.find_element_by_id("Rapid-Static").click() 
+    #driver.find_element(By.ID, "Rapid-Static").click()
+    driver.find_element(By.ID, "Static").click()
+ 
     try: 
        WebDriverWait(driver, 2).until(EC.alert_is_present()) 
        alert = driver.switch_to_alert() 
@@ -58,8 +67,9 @@ def upload():
     driver.back() 
  
  
- 
-driver = webdriver.Chrome("{}/chromedriver".format(PathProgram)) 
+# "{}/chromedriver".format(PathProgram) 
+
+driver = webdriver.Chrome() 
 driver.get("http://www.ngs.noaa.gov/OPUS/") 
  
 os.chdir("{}".format(Path)) 
@@ -84,6 +94,6 @@ for file in glob.glob(fileformat):
    print ("Number of Uploaded Files: ",count) 
    print ('Uploading time(second) is ', time.time() - start_time) 
    time.sleep(2) 
-   print ('Remove File') 
-   os.remove(file) 
+   #print ('Remove File') 
+   #os.remove(file) 
 driver.quit()
