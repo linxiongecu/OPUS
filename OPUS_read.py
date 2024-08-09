@@ -1,16 +1,22 @@
 import imaplib, email, os, glob
+# gmail cannot login with username and password using  scirpt is not allowed
+# using google takeout to export your emails.
+
+# https://stackoverflow.com/questions/70188644/gmail-login-error-with-the-help-of-imaplib-in-python
+e_path="C:/Users/lxiong/UMD/GPS/email"
+
 #Input email address and password.
-EMAIL  = "XXXXX@gmail.com"
-PWD    = "XXXX"
+EMAIL  = "xxx@gmail.com"
+PWD    = "xxxx"
 
 #SMTP_SERVER = "imap.126.com"
 SMTP_SERVER = "imap.gmail.com"
 SMTP_PORT   = 993
 #Emails that contain GPS data information
-EmailContent="2019"
+EmailContent="gods"
 def read_email_from_gmail():
     try:
-        mail = imaplib.IMAP4_SSL(SMTP_SERVER)
+        mail = imaplib.IMAP4_SSL(SMTP_SERVER, SMTP_PORT)
         mail.login(EMAIL,PWD)
         mail.select('inbox')
         type, data = mail.search(None, 'ALL')
@@ -45,7 +51,8 @@ def read_email_from_gmail():
         print (str(e))
 
 current_directory = os.getcwd()
-final_directory = os.path.join(current_directory, r'Emails')
+final_directory = e_path
+os.makedirs(final_directory, exist_ok=True)
 os.chdir(final_directory )
 for file in glob.glob("OPUS*txt"):
      os.remove(file)

@@ -1,7 +1,7 @@
 ###Save the webdriver and  script under one folder. 
 ##By Lin  20170308. 
 #Path of the webdriver. 
-PathProgram="C:/Users/lxiong/UMD/GPS/data"
+#PathProgram="C:/Users/lxiong/UMD/GPS/data"
 #find your data file folder. 
 Path="C:/Users/lxiong/UMD/GPS/data"
 #File format 
